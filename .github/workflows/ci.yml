@@ -4,6 +4,7 @@ on:
   pull_request:
     paths-ignore:
       - 'microsite/**'
+
 jobs:
   verify:
     runs-on: ubuntu-latest
@@ -37,7 +38,7 @@ jobs:
           path: '**/node_modules'
           # We use both yarn.lock and package.json as cache keys to ensure that
           # changes to local monorepo packages bust the cache.
-          key: ${{ runner.os }}-node_modules-${{ hashFiles('yarn.lock', '**/package.json') }}
+          key: v2-${{ runner.os }}-node_modules-${{ hashFiles('yarn.lock', '**/package.json') }}
 
       # If we get a cache hit for node_modules, there's no need to bring in the global
       # yarn cache or run yarn install, as all dependencies will be installed already.
@@ -52,9 +53,9 @@ jobs:
         if: steps.cache-modules.outputs.cache-hit != 'true'
         with:
           path: ${{ steps.yarn-cache.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+          key: v2-${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
+            v2-${{ runner.os }}-yarn-
 
       - name: yarn install
         if: steps.cache-modules.outputs.cache-hit != 'true'

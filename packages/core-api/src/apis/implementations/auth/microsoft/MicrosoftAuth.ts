@@ -76,7 +76,7 @@ class MicrosoftAuth
     provider = DEFAULT_PROVIDER,
     oauthRequestApi,
   }: CreateOptions) {
-    const connector = new DefaultAuthConnector({
+    const connector = new DefaultAuthConnector<MicrosoftSession>({
       backendUrl,
       basePath,
       environment,
@@ -97,7 +97,7 @@ class MicrosoftAuth
       },
     });
 
-    const sessionManager = new RefreshingAuthSessionManager({
+    const sessionManager = new RefreshingAuthSessionManager<MicrosoftSession>({
       connector,
       defaultScopes: new Set([
         'openid',
